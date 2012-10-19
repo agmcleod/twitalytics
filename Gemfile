@@ -14,11 +14,12 @@ gem 'jquery-rails'
 gem 'json'
 gem 'twitter', '2.0.2'
 
-# START:therubyracer
-platform :ruby do
-  gem 'therubyracer'
+gem 'activerecord-jdbc-adapter', :require => false
+
+platform :jruby do
+  gem 'therubyrhino'
+  gem 'get_back'
 end
-# END:therubyracer
 
 group :test do
   gem 'rspec-rails'
@@ -27,13 +28,13 @@ end
 # START:db_driver
 group :production do
   # START:pg
-  gem 'pg'
+  gem 'jdbc-postgres'
   # END:pg
 end
 
 group :development, :test do
   # START:sqlite
-  gem 'sqlite3'
+  gem 'jdbc-sqlite3'
   # END:sqlite
 end
 # END:db_driver
