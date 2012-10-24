@@ -7,8 +7,15 @@
 # Visit http://www.pragmaticprogrammer.com/titles/jkdepj for more book information.
 #---
 class DeleteOldStatuses
+
+  def initialize(options = {})
+    @max_age = options["max_age"]
+    @max_age ||= 30
+    @options = options
+  end
+
   def run
-    ids = Status.where("created_at < ?", 30.days.ago)
+    ids = Status.where("created_at < ?", @max_age.days.ago)
     if ids.size > 0
       Status.destroy(ids)
       puts "#{ids.size} statuses have been deleted!"
@@ -17,4 +24,3 @@ class DeleteOldStatuses
     end
   end
 end
-DeleteOldStatuses.new.run

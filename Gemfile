@@ -39,3 +39,5 @@ group :development, :test do
   # END:sqlite
 end
 # END:db_driver
+
+gem "torquebox", "2.1.2"
