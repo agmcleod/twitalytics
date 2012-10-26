@@ -11,7 +11,8 @@ class torquebox {
     path => $path,
     creates => "/tmp/torquebox.zip",
     unless => "ls /opt | grep torquebox-${tb_version}",
-    require => [Package["openjdk-6-jdk"], User[torquebox]]
+    #require => [Package["openjdk-6-jdk"], User[torquebox]]
+    require => Package["openjdk-6-jdk"]
   }
 
   exec { "unpack_tb" :
@@ -27,38 +28,40 @@ class torquebox {
     require => Exec["unpack_tb"]
   }
 
-  user { "torquebox":
-    ensure => present,
-    managehome => true,
-    system => true
-  }
+  #user { "torquebox":
+  #  ensure => present,
+  #  managehome => true,
+  #  system => true
+  #}
 
   exec { "chown_tb_home":
-    command => "chown -RH torquebox:torquebox ${tb_home}",
+    command => "chown -RH vagrant:vagrant ${tb_home}",
     path => $path,
-    require => [File[$tb_home], User[torquebox]]
+    # require => [File[$tb_home], User[torquebox]]
+    require => File[$tb_home]
   }
 
-  exec { copy_ssh_key :
-    command => "cp -R /home/vagrant/.ssh /home/torquebox/.ssh",
-    path => $path,
-    creates => "/home/torquebox/.ssh",
-    require => User[torquebox]
-  }
-  file { "/home/torquebox/.ssh":
-    ensure => directory,
-    owner => torquebox,
-    group => torquebox,
-    recurse => true,
-    require => Exec[copy_ssh_key]
-  }
+  #exec { copy_ssh_key :
+  #  command => "cp -R /home/vagrant/.ssh /home/torquebox/.ssh",
+  #  path => $path,
+  #  creates => "/home/torquebox/.ssh",
+  #  require => User[torquebox]
+  #}
+  #file { "/home/torquebox/.ssh":
+  #  ensure => directory,
+  #  owner => torquebox,
+  #  group => torquebox,
+  #  recurse => true,
+  #  require => Exec[copy_ssh_key]
+  #}
   exec { "upstart_install":
     cwd => $tb_home,
     command => "${tb_home}/jruby/bin/jruby -S rake torquebox:upstart:install",
     environment => ["JBOSS_HOME=${tb_home}/jboss", "TORQUEBOX_HOME=${tb_home}",
                     'SERVER_OPTS="-b=0.0.0.0"'],
     creates => "/etc/init/torquebox.conf",
-    require => [File[$tb_home], User["torquebox"]]
+    #require => [File[$tb_home], User["torquebox"]]
+    require => File[$tb_home]
   }
 
   exec { "upstart_start":
