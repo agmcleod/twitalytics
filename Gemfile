@@ -10,6 +10,8 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
 end
 
+gem 'torquebox-remote-deployer', '0.1.2.pre2'
+
 gem 'jquery-rails'
 gem 'json'
 gem 'twitter', '2.0.2'
@@ -17,7 +19,7 @@ gem 'twitter', '2.0.2'
 gem 'activerecord-jdbc-adapter', :require => false
 
 platform :jruby do
-  gem 'jruby-openssl', '0.7.6.1'
+  gem 'jruby-openssl' #, '0.7.6.1'
   gem 'therubyrhino'
   gem 'get_back'
 end

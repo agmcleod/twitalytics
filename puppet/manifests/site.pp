@@ -1,6 +1,3 @@
-include jruby
-include apache2
-include postgres
 group { "puppet":
   ensure => "present",
 }
@@ -14,3 +11,8 @@ Exec["apt-update"] -> Package <| |>
 package { "openjdk-6-jdk":
   ensure => present
 }
+
+include jruby
+include apache2
+include postgres
+include torquebox
