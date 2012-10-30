@@ -19,7 +19,7 @@ gem 'twitter', '2.0.2'
 gem 'activerecord-jdbc-adapter', :require => false
 
 platform :jruby do
-  gem 'jruby-openssl' #, '0.7.6.1'
+  gem 'jruby-openssl', '0.7.6.1'
   gem 'therubyrhino'
   gem 'get_back'
 end
@@ -42,4 +42,4 @@ group :development, :test do
 end
 # END:db_driver
 
-gem "torquebox", "2.1.2"
+gem "torquebox", "2.0.2"

@@ -5,5 +5,6 @@ namespace :deploy do
     Rake::Task["torquebox:remote:exec"].invoke("bundle exec rake db:migrate")
     puts "Migrations Complete..."
     Rake::Task["torquebox:remote:stage:deploy"].invoke
+    puts "Deployment Complete!"
   end
 end

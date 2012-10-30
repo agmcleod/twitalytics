@@ -1,13 +1,12 @@
 class torquebox {
   $tb_home = "/opt/torquebox"
-  $tb_version = "2.1.2"
-
+  $tb_version = "2.0.2"
   package { unzip:
     ensure => present
   }
 
   exec { "download_tb":
-    command => "wget -O /tmp/torquebox.zip http://torquebox.org/release/org/torquebox/torquebox-dist/2.1.2/torquebox-dist-2.1.2-bin.zip",
+    command => "wget -O /tmp/torquebox.zip http://torquebox.org/release/org/torquebox/torquebox-dist/2.0.2/torquebox-dist-2.0.2-bin.zip",
     path => $path,
     creates => "/tmp/torquebox.zip",
     unless => "ls /opt | grep torquebox-${tb_version}",
@@ -56,7 +55,7 @@ class torquebox {
   #}
   exec { "upstart_install":
     cwd => $tb_home,
-    command => "${tb_home}/jruby/bin/jruby -S rake torquebox:upstart:install",
+    command => "${tb_home}/jruby/bin/jruby --1.9 -S rake torquebox:upstart:install",
     environment => ["JBOSS_HOME=${tb_home}/jboss", "TORQUEBOX_HOME=${tb_home}",
                     'SERVER_OPTS="-b=0.0.0.0"'],
     creates => "/etc/init/torquebox.conf",
@@ -66,7 +65,7 @@ class torquebox {
 
   exec { "upstart_start":
     cwd => $tb_home,
-    command => "${tb_home}/jruby/bin/jruby -S rake torquebox:upstart:start",
+    command => "${tb_home}/jruby/bin/jruby --1.9 -S rake torquebox:upstart:start",
     environment => ["JBOSS_HOME=${tb_home}/jboss", "TORQUEBOX_HOME=${tb_home}"],
     require => Exec["upstart_install"]
   }
