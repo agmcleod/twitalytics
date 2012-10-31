@@ -19,7 +19,7 @@ gem 'twitter', '2.0.2'
 gem 'activerecord-jdbc-adapter', :require => false
 
 platform :jruby do
-  gem 'jruby-openssl', '0.7.6.1'
+  gem 'jruby-openssl', '~> 0.7.4.0'
   gem 'therubyrhino'
   gem 'get_back'
 end
