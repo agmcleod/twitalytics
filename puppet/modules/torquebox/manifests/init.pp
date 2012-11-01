@@ -10,8 +10,7 @@ class torquebox {
     path => $path,
     creates => "/tmp/torquebox.zip",
     unless => "ls /opt | grep torquebox-${tb_version}",
-    #require => [Package["openjdk-6-jdk"], User[torquebox]]
-    require => Package["openjdk-6-jdk"]
+    require => [Package["openjdk-6-jdk"], User[torquebox]]
   }
 
   exec { "unpack_tb" :
@@ -50,8 +49,7 @@ class torquebox {
   exec { "chown_tb_home":
     command => "chown -RH torquebox:torquebox ${tb_home}-${tb_version}",
     path => $path,
-    # require => [File[$tb_home], User[torquebox]]
-    require => File[$tb_home]
+    require => [File[$tb_home], User[torquebox]]
   }
 
   exec { "upstart_install":
@@ -60,8 +58,7 @@ class torquebox {
     environment => ["JBOSS_HOME=${tb_home}/jboss", "TORQUEBOX_HOME=${tb_home}",
                     'SERVER_OPTS="-b=0.0.0.0"'],
     creates => "/etc/init/torquebox.conf",
-    #require => [File[$tb_home], User["torquebox"]]
-    require => File[$tb_home]
+    require => [File[$tb_home], User["torquebox"]]
   }
 
   exec { "upstart_start":
