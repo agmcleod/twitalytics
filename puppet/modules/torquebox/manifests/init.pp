@@ -27,35 +27,36 @@ class torquebox {
     require => Exec["unpack_tb"]
   }
 
-  #user { "torquebox":
-  #  ensure => present,
-  #  managehome => true,
-  #  system => true
-  #}
+  user { "torquebox":
+    ensure => present,
+    managehome => true,
+    system => true
+  }
+
+  exec { copy_ssh_key :
+    command => "cp -R /home/vagrant/.ssh /home/torquebox/.ssh",
+    path => $path,
+    creates => "/home/torquebox/.ssh",
+    require => User[torquebox]
+  }
+  file { "/home/torquebox/.ssh":
+    ensure => directory,
+    owner => torquebox,
+    group => torquebox,
+    recurse => true,
+    require => Exec[copy_ssh_key]
+  }
 
   exec { "chown_tb_home":
-    command => "chown -RH vagrant:vagrant ${tb_home}",
+    command => "chown -RH torquebox:torquebox ${tb_home}-${tb_version}",
     path => $path,
     # require => [File[$tb_home], User[torquebox]]
     require => File[$tb_home]
   }
 
-  #exec { copy_ssh_key :
-  #  command => "cp -R /home/vagrant/.ssh /home/torquebox/.ssh",
-  #  path => $path,
-  #  creates => "/home/torquebox/.ssh",
-  #  require => User[torquebox]
-  #}
-  #file { "/home/torquebox/.ssh":
-  #  ensure => directory,
-  #  owner => torquebox,
-  #  group => torquebox,
-  #  recurse => true,
-  #  require => Exec[copy_ssh_key]
-  #}
   exec { "upstart_install":
     cwd => $tb_home,
-    command => "${tb_home}/jruby/bin/jruby --1.9 -S rake torquebox:upstart:install",
+    command => "${tb_home}/jruby/bin/jruby -S rake torquebox:upstart:install",
     environment => ["JBOSS_HOME=${tb_home}/jboss", "TORQUEBOX_HOME=${tb_home}",
                     'SERVER_OPTS="-b=0.0.0.0"'],
     creates => "/etc/init/torquebox.conf",
@@ -65,7 +66,7 @@ class torquebox {
 
   exec { "upstart_start":
     cwd => $tb_home,
-    command => "${tb_home}/jruby/bin/jruby --1.9 -S rake torquebox:upstart:start",
+    command => "${tb_home}/jruby/bin/jruby -S rake torquebox:upstart:start",
     environment => ["JBOSS_HOME=${tb_home}/jboss", "TORQUEBOX_HOME=${tb_home}"],
     require => Exec["upstart_install"]
   }
