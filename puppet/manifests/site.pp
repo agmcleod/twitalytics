@@ -12,7 +12,7 @@ package { "openjdk-6-jdk":
   ensure => present
 }
 
-#include jruby
+include jruby
 include apache2
 include postgres
 include torquebox
