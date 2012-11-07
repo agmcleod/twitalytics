@@ -10,7 +10,7 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
 end
 
-gem 'torquebox-remote-deployer', '0.1.2.pre2'
+gem 'torquebox-remote-deployer', :git => "https://github.com/agmcleod/torquebox-remote-deployer.git" #, '0.1.2.pre2'
 
 gem 'jquery-rails'
 gem 'json'
@@ -43,3 +43,4 @@ end
 # END:db_driver
 
 gem "torquebox" #, "2.0.2"
+gem "rake", "0.9.2.2"

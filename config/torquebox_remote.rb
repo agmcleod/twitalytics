@@ -4,4 +4,5 @@ TorqueBox::RemoteDeploy.configure do
   port "2222"
   user "torquebox"
   key "~/.vagrant.d/insecure_private_key"
+  jruby_home "/opt/jruby"
 end

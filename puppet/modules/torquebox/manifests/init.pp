@@ -52,13 +52,20 @@ class torquebox {
     require => [File[$tb_home], User[torquebox]]
   }
 
+  exec { "install_gems":
+    cwd => "${tb_home}/jruby/lib/ruby/gems/1.8/cache",
+    command => "/opt/jruby/bin/jruby -S gem install *.gem",
+    path => $path,
+    require => [File[$tb_home], User["torquebox"]]
+  }
+
   exec { "upstart_install":
     cwd => $tb_home,
     command => "/opt/jruby/bin/jruby -S rake torquebox:upstart:install",
     environment => ["JBOSS_HOME=${tb_home}/jboss", "TORQUEBOX_HOME=${tb_home}",
                     'SERVER_OPTS="-b=0.0.0.0"'],
     creates => "/etc/init/torquebox.conf",
-    require => [File[$tb_home], User["torquebox"]]
+    require => [Exec["install_gems"], File[$tb_home], User["torquebox"]]
   }
 
   exec { "upstart_start":
