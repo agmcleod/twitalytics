@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/agmcleod/torquebox-remote-deployer.git
-  revision: 58754d757638c6639ea7f69926b6bd4d1f8e5787
+  revision: 037fb0f0cd94b01bdf553d16c735f834cb8bb972
   specs:
     torquebox-remote-deployer (0.1.2.pre3-java)
       jruby-openssl
